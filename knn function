@@ -1,0 +1,26 @@
+knn <- function(test,park,k){
+  test=scale(test)
+  test=as.data.frame(test)
+  output= test[ , which(names(test) %in% c("total_UPDRS"))]
+  test= test[ , -which(names(test) %in% c("total_UPDRS"))]
+  n <- nrow(test)
+  neigh <- matrix(0, nrow = n, ncol = k)
+  park1=park[ , -which(names(park) %in% c("total_UPDRS"))]
+  park1=scale(park1)
+  for(i in 1:n) {
+    euc.dist <- colSums((test[i, ] - t(park1)) ^ 2)  
+    neigh[i, ] <- order(euc.dist)[2:(k + 1)]
+  }
+  num <- matrix(0, nrow = n, ncol = k)
+  for(i in 1:n){
+    for(j in 1:k){
+      
+      num[i,j]=park[neigh[i,j],5]  
+    }}
+  average=apply(num,1,mean)
+  average=scale(average)
+  rmse=mean(sqrt((average-output)^2))
+  return(rmse)
+  }
+  
+  
